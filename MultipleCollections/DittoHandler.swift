@@ -67,11 +67,7 @@ final class DittoHandler: DittoHandlerType {
     }
 
     func stop(type: CollectionType) {
-        var lq = liveQuery(type: type)
-        print("\(#function) - \(lq.debugDescription)")
-
-        lq?.stop()
-        lq = nil
+        liveQuery(type: type)?.stop()
     }
 
     func reset() {
