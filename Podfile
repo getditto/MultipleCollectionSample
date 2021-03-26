@@ -6,6 +6,6 @@ target 'MultipleCollections' do
   use_frameworks!
 
   # Pods for MultipleCollections
-  pod 'DittoKitSwift'
+  pod 'DittoSwift', '1.0.0-alpha9'
 
 end

@@ -1,4 +1,4 @@
-import DittoKitSwift
+import DittoSwift
 
 protocol DittoHandlerType: AnyObject {
     init(didChangeCounts: @escaping ((DittoHandler.CollectionType, Int) -> Void))
@@ -15,10 +15,20 @@ final class DittoHandler: DittoHandlerType {
         case A, B
     }
 
-    private var ditto: DittoKit = {
-        let ditto = DittoKit(identity: DittoBasicInfo.identity)
+    private var ditto: Ditto = {
+        // You can set a log level
+        DittoLogger.minimumLogLevel = .debug
+
+        // App name for the Ditto SDK
+        // `let ditto = Ditto()`
+        let ditto = Ditto(identity: DittoBasicInfo.identity)
+
+        // Set your access license
         ditto.setAccessLicense(DittoBasicInfo.accessLicense)
-        ditto.start()
+
+        // Choose sync transports. Adding all is recommended for the best performance!
+        ditto.start(transports: [.awdl, .bluetooth, .wifi])
+
         return ditto
     }()
 
@@ -86,7 +96,7 @@ final class DittoHandler: DittoHandlerType {
     private func setupCollections() {
         [collectionA, collectionB].forEach { collection in
             if collection.findByID(countDocID).exec() == nil {
-                _ = try? collection.insert([countDocKey: 0], withID: countDocID, isDefault: true)
+                _ = try? collection.insert([countDocKey: 0], id: countDocID, isDefault: true)
 
                 collection.findByID(countDocID).update { [weak self] doc in
                     guard let self = self else { return }

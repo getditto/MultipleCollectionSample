@@ -1,4 +1,4 @@
-import DittoKitSwift
+import DittoSwift
 
 struct DittoBasicInfo {
 
